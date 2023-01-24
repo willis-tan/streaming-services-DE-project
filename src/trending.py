@@ -54,10 +54,8 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
 # the "ingest_date" key to track historical data
 now = datetime.now()
 ingest_date = now.strftime("%Y-%m-%d")
-weekly_trends = {'ingest_date': ingest_date, 'results': []}
-for page in page_result:
-    weekly_trends['results'] += page
 
 # finally, dump the formatted contents in JSON file
-with open('test.json', 'w') as f:
-    f.write(json.dumps(weekly_trends, indent=2))
+with open('{}_trending-shows.json'.format(ingest_date), 'w') as f:
+    for page in page_result:
+        f.write('\n'.join([json.dumps(show) for show in page]))
